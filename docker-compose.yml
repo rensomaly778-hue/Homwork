@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: ./backend/backend
+    container_name: my-app-backend
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      FRONTEND_URL: http://localhost:5500
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend/frontend
+    container_name: my-app-frontend
+    ports:
+      - "5500:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
